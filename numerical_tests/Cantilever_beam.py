@@ -15,7 +15,7 @@ sys.path.append("../cross_entropy/")
 from CE_SG import CEIS_SG
 from CE_GM import CEIS_GM
 sys.path.append("../shapley_estimators/")
-from ROSA_shapley_effects import rosa_shapley_effects_gd
+from ROSA_shapley_effects import rosa_shapley_effects,rosa_shapley_effects_gd
 
 #%% Setting
 
@@ -156,3 +156,34 @@ np.savez("data/Cantilever_beam_boxplots_std.npz",
          pf_isSG_gd=shapleys_pf_isSG_box_norm,
          dmc_isGM_gd=shapleys_mc_isGM_box_norm,
          pf_isGM_gd=shapleys_pf_isGM_box_norm)
+
+
+#%% Boxplots given-model
+
+n_rep = 2*10**2
+N = 2*10**4
+Nv = 10**4
+No_mc = int(Nv/(2**dim-2)//3)
+No_pf = int(Nv/(2**dim-2)//2)
+
+shapleys_mc_isSG_box_gm = np.zeros((n_rep,dim))
+shapleys_pf_isSG_box_gm = np.zeros((n_rep,dim))
+
+
+for j in range(n_rep):
+    shapleys_mc_isSG_box_gm[j,:],_ = rosa_shapley_effects(phi,t,input_distr,Nv=Nv,Nu=No_mc,Ni=3,m=10**4,withIS=True,aggregation="subset",type_estimator="dMC",aux_distr = aux_distr_SG)
+    shapleys_pf_isSG_box_gm[j,:],_ = rosa_shapley_effects(phi,t,input_distr,Nv=Nv,Nu=No_pf,Ni=3,m=10**4,withIS=True,aggregation="subset",type_estimator="PF",aux_distr = aux_distr_SG)
+    
+    if (j+1)%(n_rep//10)==0:
+        print("*",end="")
+print(" - Ok non given-data")
+
+
+#%% Save data
+
+reference_values = np.load("data/ref_values_cantiler_beam.npz")
+
+np.savez("data/Cantilever_beam_boxplots_gm.npz",
+         theo_values = reference_values['ref'],
+         dmc_isSG=shapleys_mc_isSG_box_gm,
+         pf_isSG=shapleys_pf_isSG_box_gm)
