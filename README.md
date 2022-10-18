@@ -10,3 +10,9 @@ The folder "shapley_estimators" contains the algorithms used the estimation of t
 The folder "numerical_tests" contains the implementation of the test cases from the article as well as the corresponding data.
 
 ## Requirements
+
+In order to install the required modules, please run the following line in a terminal or in the console:
+
+```
+pip install -r requirements.txt
+```
