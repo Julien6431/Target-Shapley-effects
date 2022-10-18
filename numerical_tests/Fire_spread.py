@@ -197,7 +197,7 @@ print(" - Ok non given-data")
 
 reference_values = np.load("data/ref_values_fire_spread.npz")
 
-np.savez("data/Fire_spread_boxplots_ngd_20000.npz",
+np.savez("data/Fire_spread_boxplots_gm.npz",
          theo_values = reference_values['ref'],
          dmc_isSG=shapleys_mc_isSG_box_gm,
          pf_isSG=shapleys_pf_isSG_box_gm)
