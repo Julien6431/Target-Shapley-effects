@@ -9,6 +9,8 @@ The folder "shapley_estimators" contains the algorithms used the estimation of t
 
 The folder "numerical_tests" contains the implementation of the test cases from the article as well as the corresponding data. These files illustrate how to use the algorithms. 
 
+Feel free to test this algortihms on your own test case and/or to play with the proposed ones.
+
 ## Requirements
 
 In order to install the required modules, please run the following line in a terminal or in the console:
