@@ -7,7 +7,7 @@ The folder "cross_entropy" contains the softwares related to the cross-entropy a
 
 The folder "shapley_estimators" contains the algorithms used the estimation of the target Shapley effects. The main functions can be found in the file "ROSA_shapley_effects.py". Estimators without and with importance sampling in both geven-model and given-data frameworks are implemented.
 
-The folder "numerical_tests" contains the implementation of the test cases from the article as well as the corresponding data.
+The folder "numerical_tests" contains the implementation of the test cases from the article as well as the corresponding data. These files illustrate how to use the algorithms. 
 
 ## Requirements
 
