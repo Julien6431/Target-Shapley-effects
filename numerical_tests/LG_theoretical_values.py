@@ -23,6 +23,7 @@ Phi = lambda x:norm.cdf(x)
 def compute_theoretical_values(t,beta,mean_f,cov_f,N_sample=10**5,n_rep=10):
     """
     
+    Returns the theoretical values of the target shapley effects in the Gaussian linear case
 
     Parameters
     ----------

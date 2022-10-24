@@ -10,6 +10,7 @@ Created on Wed Jan 19 09:08:25 2022
 import numpy as np
 import openturns as ot
 import sys
+from tqdm import tqdm
 
 sys.path.append("../cross_entropy/")
 from CE_SG import CEIS_SG
@@ -128,7 +129,7 @@ print(f"Failure probability with CE-GM : {Pr_GM}")
 print(f"Number of Gaussian in the mixture : {k_fin}")
 
 
-#%% Boxplots given-data woth standardisation
+#%% Boxplots given-data with standardisation
 
 n_rep = 2*10**2
 N = 2*10**4
@@ -140,7 +141,7 @@ shapleys_pf_isSG_box_norm = np.zeros((n_rep,dim))
 shapleys_pf_isGM_box_norm = np.zeros((n_rep,dim))
 
 
-for j in range(n_rep):
+for j in tqdm(range(n_rep)):
     Xg_SG = np.array(aux_distr_SG.getSample(N))
     Yg_SG = np.apply_along_axis(lambda x:phi(x)>t,1,Xg_SG)
     shapleys_mc_isSG_box_norm[j,:],_ = rosa_shapley_effects_gd(Xg_SG,Yg_SG,Nu=No,Ni=2,aggregation="subset",withIS=True,type_estimator="dMC",standardisation=True,init_distr=input_distr,aux_distr=aux_distr_SG)
@@ -151,11 +152,6 @@ for j in range(n_rep):
     Yg_GM = np.apply_along_axis(lambda x:phi(x)>t,1,Xg_GM)
     shapleys_mc_isGM_box_norm[j,:],_ = rosa_shapley_effects_gd(Xg_GM,Yg_GM,Nu=No,Ni=2,aggregation="subset",withIS=True,type_estimator="dMC",standardisation=True,init_distr=input_distr,aux_distr=aux_distr_GM)
     shapleys_pf_isGM_box_norm[j,:],_ = rosa_shapley_effects_gd(Xg_GM,Yg_GM,Nu=No,aggregation="subset",withIS=True,type_estimator="PF",standardisation=True,init_distr=input_distr,aux_distr=aux_distr_GM)
-    
-    if (j+1)%(n_rep//10)==0:
-        print("*",end="")
-print(" - Ok with std")
-
 
 #%% Save data
 
@@ -178,19 +174,13 @@ Nv = 10**4
 No_mc = int(np.floor(Nv/(3*(2**dim-2))))
 No_pf = int(np.floor(Nv/(2*(2**dim-2))))
 
-print(10**4 + 3*No_mc*(2**dim-2))
-print(10**4 + 2*No_pf*(2**dim-2))
-
 shapleys_mc_isSG_box_gm = np.zeros((n_rep,dim))
 shapleys_pf_isSG_box_gm = np.zeros((n_rep,dim))
 
 
-for j in range(n_rep):
+for j in tqdm(range(n_rep)):
     shapleys_mc_isSG_box_gm[j,:],_ = rosa_shapley_effects(phi,t,input_distr,Nv=Nv,Nu=No_mc,Ni=3,m=10**4,withIS=True,aggregation="subset",type_estimator="dMC",aux_distr = aux_distr_SG)
     shapleys_pf_isSG_box_gm[j,:],_ = rosa_shapley_effects(phi,t,input_distr,Nv=Nv,Nu=No_pf,Ni=3,m=10**4,withIS=True,aggregation="subset",type_estimator="PF",aux_distr = aux_distr_SG)
-    if (j+1)%(n_rep//10)==0:
-        print("*",end="")
-print(" - Ok non given-data")
 
 
 #%% Save data

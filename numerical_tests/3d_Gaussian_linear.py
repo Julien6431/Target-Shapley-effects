@@ -10,7 +10,7 @@ Created on Wed Dec 15 10:16:10 2021
 import numpy as np
 import openturns as ot
 import sys
-
+from tqdm import tqdm
 
 from LG_theoretical_values import compute_theoretical_values
 sys.path.append("../cross_entropy/")
@@ -56,7 +56,7 @@ shapleys_pf_gd_box = np.zeros((n_rep,dim))
 shapleys_pf_is_gd_box = np.zeros((n_rep,dim))
 
 
-for j in range(n_rep):
+for j in tqdm(range(n_rep)):
     Xf = np.array(input_distr.getSample(N))
     Yf = np.apply_along_axis(lambda x:phi(x)>t,1,Xf)
     shapleys_mc_gd_box[j,:],_ = rosa_shapley_effects_gd(Xf,Yf,Nu=No,Ni=3,aggregation='subset',type_estimator="dMC",standardisation=True)
@@ -66,9 +66,6 @@ for j in range(n_rep):
     Yg = np.apply_along_axis(lambda x:phi(x)>t,1,Xg)
     shapleys_mc_is_gd_box[j,:],_ = rosa_shapley_effects_gd(Xg,Yg,Nu=No,Ni=3,aggregation="subset",withIS=True,type_estimator="dMC",standardisation=True,init_distr=input_distr,aux_distr=aux_distr)
     shapleys_pf_is_gd_box[j,:],_ = rosa_shapley_effects_gd(Xg,Yg,Nu=No,aggregation="subset",withIS=True,type_estimator="PF",standardisation=True,init_distr=input_distr,aux_distr=aux_distr)
-    if (j+1)%(n_rep//10)==0:
-        print("*",end="")
-print(" - Given-data Ok")
 
 
 #%% Boxplots given-model
@@ -78,15 +75,12 @@ shapleys_mc_is_box = np.zeros((n_rep,dim))
 shapleys_pf_box = np.zeros((n_rep,dim))
 shapleys_pf_is_box = np.zeros((n_rep,dim))
 
-for j in range(n_rep):
+for j in tqdm(range(n_rep)):
     shapleys_mc_box[j,:],_ = rosa_shapley_effects(phi,t,input_distr,Nv=Nv,Nu=No_mc,Ni=3,aggregation="subset",type_estimator="dMC")
     shapleys_pf_box[j,:],_ = rosa_shapley_effects(phi,t,input_distr,Nv=Nv,Nu=No_pf,aggregation="subset",type_estimator="PF")
     
     shapleys_mc_is_box[j,:],_ = rosa_shapley_effects(phi,t,input_distr,Nv=Nv,Nu=No_mc,Ni=3,aggregation="subset",type_estimator="dMC",withIS=True,aux_distr=aux_distr)
     shapleys_pf_is_box[j,:],_ = rosa_shapley_effects(phi,t,input_distr,Nv=Nv,Nu=No_pf,aggregation="subset",type_estimator="PF",withIS=True,aux_distr=aux_distr)
-    if (j+1)%(n_rep//10)==0:
-        print("*",end="")
-print(" - Non given-data Ok")
 
 #%% Save data
 

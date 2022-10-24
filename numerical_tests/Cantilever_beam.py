@@ -10,6 +10,7 @@ Created on Wed Dec 15 10:16:10 2021
 import numpy as np
 import openturns as ot
 import sys
+from tqdm import tqdm
 
 sys.path.append("../cross_entropy/")
 from CE_SG import CEIS_SG
@@ -71,7 +72,7 @@ shapleys_pf_isSG_box = np.zeros((n_rep,dim))
 shapleys_pf_isGM_box = np.zeros((n_rep,dim))
 
 
-for j in range(n_rep):
+for j in tqdm(range(n_rep)):
     Xf = np.array(input_distr.getSample(N))
     Yf = np.apply_along_axis(lambda x:phi(x)>t,1,Xf)
     shapleys_mc_box[j,:],_ = rosa_shapley_effects_gd(Xf,Yf,Nu=No,Ni=3,aggregation='subset',type_estimator="dMC")
@@ -86,11 +87,6 @@ for j in range(n_rep):
     Yg_GM = np.apply_along_axis(lambda x:phi(x)>t,1,Xg_GM)
     shapleys_mc_isGM_box[j,:],_ = rosa_shapley_effects_gd(Xg_SG,Yg_SG,Nu=No,Ni=3,aggregation="subset",withIS=True,type_estimator="dMC",init_distr=input_distr,aux_distr=aux_distr_GM)
     shapleys_pf_isGM_box[j,:],_ = rosa_shapley_effects_gd(Xg_SG,Yg_SG,Nu=No,aggregation="subset",withIS=True,type_estimator="PF",init_distr=input_distr,aux_distr=aux_distr_GM)
-    
-    if (j+1)%(n_rep//10)==0:
-        print("*",end="")
-print(" - Ok without std")
-
 
 
 #%% Save data
@@ -122,7 +118,7 @@ shapleys_pf_isSG_box_norm = np.zeros((n_rep,dim))
 shapleys_pf_isGM_box_norm = np.zeros((n_rep,dim))
 
 
-for j in range(n_rep):
+for j in tqdm(range(n_rep)):
     Xf = np.array(input_distr.getSample(N))
     Yf = np.apply_along_axis(lambda x:phi(x)>t,1,Xf)
     shapleys_mc_box_norm[j,:],_ = rosa_shapley_effects_gd(Xf,Yf,Nu=No,Ni=3,aggregation='subset',type_estimator="dMC",standardisation=True)
@@ -137,10 +133,6 @@ for j in range(n_rep):
     Yg_GM = np.apply_along_axis(lambda x:phi(x)>t,1,Xg_GM)
     shapleys_mc_isGM_box_norm[j,:],_ = rosa_shapley_effects_gd(Xg_SG,Yg_SG,Nu=No,Ni=3,aggregation="subset",withIS=True,type_estimator="dMC",standardisation=True,init_distr=input_distr,aux_distr=aux_distr_GM)
     shapleys_pf_isGM_box_norm[j,:],_ = rosa_shapley_effects_gd(Xg_SG,Yg_SG,Nu=No,aggregation="subset",withIS=True,type_estimator="PF",standardisation=True,init_distr=input_distr,aux_distr=aux_distr_GM)
-    
-    if (j+1)%(n_rep//10)==0:
-        print("*",end="")
-print(" - Ok with std")
 
 
 #%% Save data with standardisation
