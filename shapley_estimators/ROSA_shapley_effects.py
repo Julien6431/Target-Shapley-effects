@@ -13,7 +13,7 @@ from scipy.stats import multivariate_normal
 from scipy.special import binom
 from utils import powerset
 import openturns as ot
-from compute_closed_sobol_ngd import *
+from compute_closed_sobol_gm import *
 from compute_closed_sobol_gd import *
 
 
@@ -130,7 +130,6 @@ def rosa_shapley_effects(phi,t,input_distr,Nv=10**4,Nu=1,Ni=3,m=10**4,withIS=Fal
         closed_Sobol={}
         subsets = powerset(range(dim))
         subsets = list(subsets)
-        nb_subsets = len(subsets)
     
         for n,u in enumerate(subsets):
             if len(u)==0:
