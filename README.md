@@ -18,3 +18,13 @@ In order to install the required modules, please run the following line in a ter
 ```
 pip install -r requirements.txt
 ```
+## How to use 
+
+Example to estimate the Shapley effects in a given-data framework:
+
+```
+from shapley_estimators.ROSA_shapley_effects import rosa_shapley_effects_gd
+X,Y = data
+No = 10**3
+estimated_shapley,estimated_mean = rosa_shapley_effects_gd(X,Y,Nu=No,type_estimator="PF")
+```
