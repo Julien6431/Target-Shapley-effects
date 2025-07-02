@@ -155,7 +155,7 @@ def rosa_shapley_effects(phi,t,input_distr,Nv=10**4,Nu=1,Ni=3,m=10**4,withIS=Fal
 
 #%% Estimation of the target Shapley effects in the given-data framework
 
-def rosa_shapley_effects_gd(X,Y,Nu=1,Ni=3,m=10**4,withIS=False,aggregation="spr",type_estimator="dMC",standardisation=False,**kwargs):
+def rosa_shapley_effects_gd(X,Y,Nu=1,Ni=3,m=10**4,withIS=False,aggregation="subset",type_estimator="dMC",standardisation=True,**kwargs):
     """
     
     Estimation of the target Shapley effects in the given-data framework
