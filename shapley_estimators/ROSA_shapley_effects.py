@@ -322,15 +322,21 @@ def rosa_shapley_effects_gd(
     shapley = np.zeros(dim)
 
     if aggregation == "spr":
-        nb_perm = np.math.factorial(dim)
-        m = min(m, nb_perm)
-        all_permutations = np.array(list(itertools.permutations(range(dim))))
-        if m < nb_perm:
-            indices = np.random.choice(nb_perm, replace=True, size=m)
-            permutations = all_permutations[indices]
+        if isinstance(m, int) and m > 0:
+            nb_perm = np.math.factorial(dim)
+            m = min(m, nb_perm)
+            all_permutations = np.array(list(itertools.permutations(range(dim))))
+            if m < nb_perm:
+                indices = np.random.choice(nb_perm, replace=True, size=m)
+                permutations = all_permutations[indices]
+            else:
+                permutations = all_permutations
+        elif isinstance(m, list):
+            permutations = np.array(m)
         else:
-            permutations = all_permutations
-
+            raise ValueError(
+                "m should be either a positive integer or a list of permutations"
+            )
         for perm in permutations:
             prev = 0
             for j in range(dim):
