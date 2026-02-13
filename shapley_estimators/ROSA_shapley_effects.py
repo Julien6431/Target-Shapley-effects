@@ -161,7 +161,7 @@ def rosa_shapley_effects(
                 shapley[perm[j]] += delta_s
                 prev = mean_out
 
-        return shapley / estimated_var / m, estimated_mean
+        return shapley / estimated_var / len(permutations), estimated_mean
 
     elif aggregation == "subset":
         closed_Sobol = {}
@@ -351,7 +351,7 @@ def rosa_shapley_effects_gd(
                 shapley[perm[j]] += delta_s
                 prev = mean_out
 
-        return shapley / estimated_var / m, estimated_mean
+        return shapley / estimated_var / len(permutations), estimated_mean
 
     elif aggregation == "subset":
         closed_Sobol = {}
